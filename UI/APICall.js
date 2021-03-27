@@ -30,9 +30,7 @@ function buildURL(url, params) {
     } 
     for (var key in params) {
         // Ensure key is not from object prototype
-        console.log("running");
         if (params.hasOwnProperty(key)) {
-            console.log("running2");
             builtURL += key + "=" + params[key];
             lengthCount = lengthCount + 1;
             if (lengthCount < length) {
@@ -40,8 +38,6 @@ function buildURL(url, params) {
             }
         }
     }
-    console.log(length);
-    console.log(builtURL);
     return builtURL;
 }
 
@@ -64,3 +60,4 @@ var tempURL2 = "https://roadtrips-ml.herokuapp.com/users/createUsers"
 
 let realURL = buildURL(tempURL, jsonObject);
 callAPI("POST", tempURL2, "json", printResult, jsonObject);
+//callAPI("GET", realURL, "json", printResult, jsonObject);
