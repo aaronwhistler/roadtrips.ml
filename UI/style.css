@@ -86,16 +86,16 @@ button{
     margin-top: 5%;
 }
 
-.bigInputLineup {
+.bigInputLineup{
     margin-left: 15%;
 }
 
-.localCenter {
+.localCenter{
     width:20%;
     margin-left: 40%;
 }
 
-.genericHead {
+.genericHead{
     text-align: center;
 }
 
@@ -136,4 +136,12 @@ button{
     width: 80%;
     height: 40px;
     border-radius: 12px;
+}
+
+.littleSquare{
+    width: 40%;
+    height: auto;
+    padding: 5px;
+    margin-left: 30%;
+    border: 10px black;
 }
