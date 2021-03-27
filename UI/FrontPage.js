@@ -1,0 +1,7 @@
+function NavigateLogin() {
+
+}
+
+function NavigateSignUp() {
+
+}
