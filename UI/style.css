@@ -54,3 +54,24 @@ button{
     transform: translate(-50%, -50%);
 }
 
+.bigInput{
+    width: 70%;
+    height: 20%;
+    font-size: 32pt;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 5%;
+}
+
+.bigInputLineup{
+    margin-left: 15%;
+}
+
+.localCenter{
+    width:20%;
+    margin-left: 40%;
+}
+
+.genericHead{
+    text-align: center;
+}
