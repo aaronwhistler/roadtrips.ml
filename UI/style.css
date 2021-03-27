@@ -129,8 +129,7 @@ button{
     background-position-x: 10%;
 }
 
-.mapInput
-{
+.mapInput {
     margin-top: 15px;
     margin-left: 10px;
     width: 80%;
@@ -142,8 +141,49 @@ button{
     width: 40%;
     height: auto;
     padding: 5px;
-    margin-left: 30%;
     border: 10px black;
+    display: inline-block
+}
+
+.actSquare{
+    width: 50%;
+    height: 80%;
+    padding: 5px;
+    margin-left: 5%;
+    border: 10px black;
+    display: inline-block;
+}
+
+.scoreSquare{
+    width: 20%;
+    height: 70%;
+    padding: 5px;
+    margin-left: 5%;
+    display: inline-block;
+
+    border-width: 4px;
+    border-color: #5c6b28;
+    border-style: solid;
+
+    overflow:auto
+}
+
+.listButton{
+    background-color: #f8f9cc;
+    border-radius: 18px;
+    border-width: 4px;
+    border-color: #5c6b28;
+    border-style: solid;
+    padding: 10px;
+    margin: 2px;
+
+    color: #141c11;
+    text-align: center;
+    font-size: 16px;
+}
+
+.column {
+    padding: 10px;
 }
 .errorText{
     text-align: center;

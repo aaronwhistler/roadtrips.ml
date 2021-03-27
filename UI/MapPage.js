@@ -1,12 +1,13 @@
+// Expands and contracts ui from click of button
 function expandOverlay() {
     const but = document.getElementById("overlay");
     if(but.className == "overlay")
         but.className = "overlaySmall";
     else
         but.className = "overlay";
-
 }
 
+// Creates UI Overlay onto map
 function CenterControl(controlDiv) {
     const controlUI = document.createElement("div");
     controlUI.className = "overlaySmall";
