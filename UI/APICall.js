@@ -55,9 +55,38 @@ var jsonObject = {
     'password': 'wasdwasdwasd'
 }
 
-var tempURL = "https://roadtrips-ml.herokuapp.com/users/checkPass"
-var tempURL2 = "https://roadtrips-ml.herokuapp.com/users/createUsers"
+//var tempURL = "https://roadtrips-ml.herokuapp.com/users/checkPass"
+//var tempURL2 = "https://roadtrips-ml.herokuapp.com/users/createUsers"
 
-let realURL = buildURL(tempURL, jsonObject);
-callAPI("POST", tempURL2, "json", printResult, jsonObject);
+//let realURL = buildURL(tempURL, jsonObject);
+//callAPI("POST", tempURL2, "json", printResult, jsonObject);
 //callAPI("GET", realURL, "json", printResult, jsonObject);
+
+function loginAttempt() {
+    let tempURL = "https://roadtrips-ml.herokuapp.com/users/checkPass";
+    let jsonObject = {
+        'email': document.getElementById("emailLogin").value,
+        'password': document.getElementById("passwordLogin").value
+    };
+
+    //console.log(document.getElementById("emailLogin").value);
+    //console.log(document.getElementById("passwordLogin").value);
+    let realURL = buildURL(tempURL, jsonObject);
+    callAPI("GET", realURL, "json", checkLogin, jsonObject);
+}
+function checkLogin(result) {
+    let printObj = JSON.parse(result);
+    //console.log(printObj);
+    //console.log(typeof printObj);
+    if(printObj.valueOf() === true)
+    {
+        window.location.href = "MapPage.html";
+    }
+    else
+    {
+        document.getElementById("emailLogin").value = "";
+        document.getElementById("passwordLogin").value = "";
+        document.getElementById("errorText").hidden = false;
+        //console.log("FAILURE");
+    }
+}

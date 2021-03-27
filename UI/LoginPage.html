@@ -30,12 +30,15 @@
             >
             <input class="bigInputLineup" type="checkbox" onclick="passwordHide()">Show Password
             <br>
-            <button class="localCenter" type="submit">Submit</button>
+            <button class="localCenter" type="button" onclick="loginAttempt()">Submit</button>
+            <br>
+            <p style="font-size:1.5em; color: red" class="errorText" hidden id="errorText">FAILED TO LOGIN PLEASE TRY AGAIN.</p>
         </form>
     </div>
 
     <div class="footer"> </div>
 
 </body>
+<script src="APICall.js"></script>
 <script src="loginpage.js"></script>
 </html>

@@ -145,3 +145,6 @@ button{
     margin-left: 30%;
     border: 10px black;
 }
+.errorText{
+    text-align: center;
+}
