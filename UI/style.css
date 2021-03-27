@@ -12,17 +12,20 @@ body{
 }
 
 button{
+    /* deals with button color and border*/
     background-color: #f8f9cc;
     border-radius: 18px;
     border-width: 7px;
     border-color: #5c6b28;
     border-style: solid;
-
     padding: 20px;
+
+    /* deals with text*/
     color: #141c11;
     text-align: center;
     font-size: 24px;
 
+    /* deals with button position and margin*/
     display: inline-block;
     width: 300px;
     height: 100px;
@@ -41,6 +44,7 @@ button{
 }
 
 .bodySec{
+    /*Sets the background of the body of the page*/
     height: 86%;
     background-color: #f8f9cc;
     background-image: url("longpath.png");
@@ -50,6 +54,7 @@ button{
 }
 
 .buttonSec{
+    /*Centers the button*/
     display: flex;
     margin: 0;
     position: absolute;
@@ -60,6 +65,7 @@ button{
 }
 
 .LogoSec{
+    /*Deals with logo position*/
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -87,4 +93,9 @@ button{
 
 .genericHead{
     text-align: center;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
 }
