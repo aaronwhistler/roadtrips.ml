@@ -99,3 +99,11 @@ button{
     height: 100%;
     width: 100%;
 }
+
+.littleSquare{
+    width: 40%;
+    height: auto;
+    padding: 5px;
+    margin-left: 30%;
+    border: 10px black;
+}
