@@ -50,10 +50,10 @@ function printResult(result) {
 }
 
 // Sample JSON object that is passed
-var jsonObject = {
-    'email': 'cole@jason',
-    'password': 'wasdwasdwasd'
-}
+//var jsonObject = {
+//    'email': 'cole@jason',
+//    'password': 'wasdwasdwasd'
+//}
 
 //var tempURL = "https://roadtrips-ml.herokuapp.com/users/checkPass"
 //var tempURL2 = "https://roadtrips-ml.herokuapp.com/users/createUsers"
@@ -88,5 +88,35 @@ function checkLogin(result) {
         document.getElementById("passwordLogin").value = "";
         document.getElementById("errorText").hidden = false;
         //console.log("FAILURE");
+    }
+}
+
+function signUpAttempt()
+{
+    let tempURL2 = "https://roadtrips-ml.herokuapp.com/users/createUsers"
+    console.log(document.getElementById("passwordLogin").value);
+    console.log(typeof document.getElementById("passwordLogin").value);
+    if(document.getElementById("passwordLogin").value === document.getElementById("passwordConfirm").value)
+    {
+        let jsonObject = {
+            'email': document.getElementById("emailLogin").value,
+            'password': document.getElementById("passwordLogin").value
+        };
+        callAPI("POST", tempURL2, "json", checkSignUp, jsonObject);
+    }
+    else
+    {
+        document.getElementById("errorText").hidden = false;
+    }
+}
+function checkSignUp(result) {
+    let printObj = JSON.parse(result);
+    if(printObj.valueOf() === true)
+    {
+        window.location.href = "HobbySelectPage.html";
+    }
+    else
+    {
+        document.getElementById("errorLoad").hidden = false;
     }
 }
