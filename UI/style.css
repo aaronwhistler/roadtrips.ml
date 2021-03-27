@@ -12,6 +12,10 @@ body{
 }
 
 button{
+
+}
+
+.mainButton{
     /* deals with button color and border*/
     background-color: #f8f9cc;
     border-radius: 18px;
@@ -98,6 +102,40 @@ button{
 #map {
     height: 100%;
     width: 100%;
+}
+
+.overlay {
+    background-color: #e7e8a6;
+    height: 88%;
+    width: 300px;
+    margin-left: 10px;
+    margin-top: 70px;
+    background-image: url("longpath.png");
+    background-size: 500%;
+    background-repeat: no-repeat;
+    background-position-y: 100%;
+}
+
+.overlaySmall {
+    background-color: #e7e8a6;
+    height: 16%;
+    width: 300px;
+    margin-left: 10px;
+    margin-top: 70px;
+    background-image: url("longpath.png");
+    background-size: 500%;
+    background-repeat: no-repeat;
+    background-position-y: 70%;
+    background-position-x: 10%;
+}
+
+.mapInput
+{
+    margin-top: 15px;
+    margin-left: 10px;
+    width: 80%;
+    height: 40px;
+    border-radius: 12px;
 }
 
 .littleSquare{

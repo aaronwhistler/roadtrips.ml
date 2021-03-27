@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <title>Roadtrips.ml</title>
     <link rel="stylesheet" href="style.css">
+    <script src="./MapPage.js"></script>
 </head>
 <body>
+    <div id="map">
+    </div>
 
+<!-- Async script executes immediately and must be after any DOM elements used in callback. DONT PUSH KEY TO GIT HUB!!!! -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSRAnx0741Mx_ADJRelmfjoIwvKD1rQbw&callback=initMap&libraries=&v=weekly" async
+    >
+    </script>
 </body>
 </html>
