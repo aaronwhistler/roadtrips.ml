@@ -31,27 +31,40 @@ button{
 }
 
 .header{
-    height: 10%;
+    height: 7%;
     background-color: #e7e8a6;
 }
 
 .footer{
-    height: 10%;
+    height: 7%;
     background-color: #e7e8a6;
 }
 
 .bodySec{
-    height: 80%;
+    height: 86%;
     background-color: #f8f9cc;
+    background-image: url("longpath.png");
+    background-size: 98%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .buttonSec{
+    display: flex;
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+.LogoSec{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5%;
+    width: 50%;
 }
 
 .bigInput{
