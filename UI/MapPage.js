@@ -56,9 +56,34 @@ function decCount() {
 function journeyChart() {
 
     SetStopCount(document.getElementById("tripCount").textContent);
+    let jsonObj = '{"userEmail": "' + GetEmail() + '",' + '"numPlaces": '
+        + GetStopCount() + ',' + '"originCity": "' +  document.getElementById("start").value + '",'
+        + '"destCity": "' + document.getElementById("destination").value + '"}';
     console.log(GetStopCount());
-    window.location.href = "MapPage.html";
-    //map.setZoom(map.getZoom());
+    console.log("BEFORE PARSE");
+    console.log(jsonObj);
+    jsonObj = JSON.parse(jsonObj);
+    console.log(jsonObj);
+    PassObj(jsonObj);
+
+    //window.location.href = "MapPage.html";
+}
+
+function PassObj(jsonOBJ) {
+    //console.log(jsonOBJ);
+    let tempURL = "https://roadtrips-ml.herokuapp.com/trips/createTrip";
+    let ret = MapCallAPI("POST", tempURL, "json", CallBack, jsonOBJ);
+    console.log(ret);
+    return ret;
+}
+
+function CallBack(result)
+{
+    console.log("IN CALLBACK");
+    let ApiObj = result;
+    console.log(ApiObj)
+    SetMapPath(JSON.stringify(result));
+    //window.location.href = "MapPage.html";
 }
 
 async function ShowMap() {
@@ -114,12 +139,14 @@ function CenterControl(controlDiv) {
     inputStart.className = "mapInput";
     inputStart.required = true;
     inputStart.name = "start";
+    inputStart.id = "start";
     inputStart.placeholder = "Start";
 
     //makes destination
     inputDest.className = "mapInput";
     inputDest.required = true;
     inputDest.name = "destination";
+    inputDest.id = "destination";
     inputDest.placeholder = "Destination";
 
     //adds inputs to the form
@@ -181,8 +208,9 @@ function CenterControl(controlDiv) {
     centeringdiv.appendChild(lessbutton);
 
     const counter = document.createElement("span");
-    if(GetStopCount() == null)
+    if(GetStopCount() === null || GetStopCount() === undefined)
         SetStopCount(1);
+    console.log("HERE!:");
     console.log(GetStopCount());
     counter.textContent = GetStopCount();
     counter.className= "largerText";
@@ -256,20 +284,9 @@ async function FetchPolyline()
         });
 }
 
-/*function DrawPolyline(fpCoords)
-{
-
-    const flightPath = new google.maps.Polyline({
-        path: flightPlanCoordinates,
-        geodesic: true,
-        strokeColor: "#FF0000",
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-    });
-    flightPath.setMap(map);
-}*/
 
 async function initMap() {
+
     console.log(GetEmail());
     // The location of Uluru
     const KFalls = { lat: 42.224, lng: -121.781 };
@@ -286,33 +303,28 @@ async function initMap() {
         centerControlDiv
     );
 
-    let fp = await FetchPolyline();
-    console.log(fp);
-    //sets mappath
-    SetMapPath(JSON.stringify(fp));
+    /*let fp = await FetchPolyline();
+    console.log(fp);*/
+    //SetMapPath(JSON.stringify(fp));
 
-    console.log(JSON.parse(GetMapPath()));
-    //DrawPolyline(flightPlanCoordinates);
-    const flightPath = new google.maps.Polyline({
-        path: JSON.parse(GetMapPath()).coords,
-        geodesic: true,
-        strokeColor: "#FF0000",
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-    });
+    if(JSON.parse(GetMapPath()) != null) {
 
-    makeMarkers(5,JSON.parse(GetMapPath()),map);
-    /*const marker1 = new google.maps.Marker({
-        position: fp.markers[0],
-        map: map,
-    });
-    const marker2 = new google.maps.Marker({
-        position: fp.markers[1],
-        map: map,
-    });*/
+        console.log(JSON.parse(GetMapPath()));
+        //DrawPolyline(flightPlanCoordinates);
+        const flightPath = new google.maps.Polyline({
+            path: JSON.parse(GetMapPath()).coords,
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+        });
 
-    flightPath.setMap(map);
-    console.log(JSON.parse(GetMapPath()));
+
+        makeMarkers(GetStopCount(), JSON.parse(GetMapPath()), map);
+
+        flightPath.setMap(map);
+        console.log(JSON.parse(GetMapPath()));
+    }
 }
 
 //args: number of markers, flightpath markse
