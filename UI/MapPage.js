@@ -67,7 +67,8 @@ async function ShowMap() {
     const count = document.getElementById("tripCount");
     const div = document.getElementById("divStop");
 
-    let fp = await FetchPolyline();
+    console.log("IN SHOW MAP");
+    let fp = JSON.parse(GetMapPath());
     console.log(fp);
 
     //deletes all current stops
@@ -287,16 +288,20 @@ async function initMap() {
 
     let fp = await FetchPolyline();
     console.log(fp);
+    //sets mappath
+    SetMapPath(JSON.stringify(fp));
+
+    console.log(JSON.parse(GetMapPath()));
     //DrawPolyline(flightPlanCoordinates);
     const flightPath = new google.maps.Polyline({
-        path: fp.coords,
+        path: JSON.parse(GetMapPath()).coords,
         geodesic: true,
         strokeColor: "#FF0000",
         strokeOpacity: 1.0,
         strokeWeight: 2,
     });
 
-    makeMarkers(5,fp,map);
+    makeMarkers(5,JSON.parse(GetMapPath()),map);
     /*const marker1 = new google.maps.Marker({
         position: fp.markers[0],
         map: map,
@@ -307,7 +312,7 @@ async function initMap() {
     });*/
 
     flightPath.setMap(map);
-    console.log("FP: " + fp);
+    console.log(JSON.parse(GetMapPath()));
 }
 
 //args: number of markers, flightpath markse
@@ -326,9 +331,8 @@ function makeMarkers(num, flightP,map)
 }
 
 function GetInterests() {
-    //console.log(jsonOBJ);
     let tempURL = "http://localhost:5000/ml/suggest";
-    //let tempEmail =
+
     let temp = MapCallAPI("GET", tempURL, "json", GetInterestsDone, GetEmail());
     console.log(temp);
     return temp;
@@ -336,6 +340,6 @@ function GetInterests() {
 
 function GetInterestsDone()
 {
-    //console.log("A P I   D O N E");
+    console.log("A P I   D O N E");
     //window.location.href = "MapPage.html";
 }
