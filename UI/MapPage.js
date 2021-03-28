@@ -54,9 +54,21 @@ function decCount() {
 
 //add api function to this javascript function and call it when time comes
 function journeyChart() {
-    //console.log("IN CLICK");
+
+    SetStopCount(document.getElementById("tripCount").textContent);
+    console.log(GetStopCount());
+    window.location.href = "MapPage.html";
+    //map.setZoom(map.getZoom());
+}
+
+async function ShowMap() {
+
+    //this should refresh allow new polyline.json to run
     const count = document.getElementById("tripCount");
     const div = document.getElementById("divStop");
+
+    let fp = await FetchPolyline();
+    console.log(fp);
 
     //deletes all current stops
     while (div.firstChild) {
@@ -70,20 +82,18 @@ function journeyChart() {
     {
         let tempdiv = document.createElement("div");
         let temp = document.createElement("p");
-        let temppic = document.createElement("img");
+        /*let temppic = document.createElement("img");
         temppic.src="https://i1.sndcdn.com/artworks-000501566619-j7ipmx-t500x500.jpg";
-        temppic.style="width:100%;height:100%;";
-        temp.textContent = "Peter Undertale" + i.toString();
+        temppic.style="width:100%;height:100%;";*/
+        temp.textContent = "Step " + (i+1).toString() + ": " + await fp.names[i]['name'];
         temp.className="errorText";
         tempdiv.className="divbox";
         tempdiv.appendChild(temp);
-        tempdiv.appendChild(temppic);
+        //tempdiv.appendChild(temppic);
 
         div.appendChild(tempdiv);
         i++;
     }
-    //this should refresh allow new polyline.json to run
-    //window.location.href = "MapPage.html";
     //map.setZoom(map.getZoom());
 }
 
@@ -126,6 +136,14 @@ function CenterControl(controlDiv) {
     search.onclick = function(){journeyChart()};
     controlUI.appendChild(search);
 
+    const showMap = document.createElement("button");
+    showMap.id = "showmap";
+    showMap.textContent = "Show Stops";
+    showMap.style.marginLeft = "10px";
+    showMap.style.marginTop = "5px";
+    showMap.onclick = function(){ShowMap()};
+    controlUI.appendChild(showMap);
+
     //creates button
     const expand = document.createElement("button");
     expand.textContent = "▼";
@@ -162,7 +180,10 @@ function CenterControl(controlDiv) {
     centeringdiv.appendChild(lessbutton);
 
     const counter = document.createElement("span");
-    counter.textContent = "1";
+    if(GetStopCount() == null)
+        SetStopCount(1);
+    console.log(GetStopCount());
+    counter.textContent = GetStopCount();
     counter.className= "largerText";
     counter.id = "tripCount";
     centeringdiv.appendChild(counter);
@@ -259,7 +280,7 @@ async function initMap() {
 
     const centerControlDiv = document.createElement("div");
     centerControlDiv.style.height = "100%";
-    CenterControl(centerControlDiv);
+    await CenterControl(centerControlDiv);
     map.controls[google.maps.ControlPosition.LEFT_CENTER].push(
         centerControlDiv
     );
@@ -275,7 +296,7 @@ async function initMap() {
         strokeWeight: 2,
     });
 
-    makeMarkers(3,fp,map);
+    makeMarkers(5,fp,map);
     /*const marker1 = new google.maps.Marker({
         position: fp.markers[0],
         map: map,
@@ -286,7 +307,7 @@ async function initMap() {
     });*/
 
     flightPath.setMap(map);
-
+    console.log("FP: " + fp);
 }
 
 //args: number of markers, flightpath markse
@@ -295,9 +316,11 @@ function makeMarkers(num, flightP,map)
     let ii = 0;
     for(ii; ii < num; ii++)
     {
+        console.log(flightP.names[ii]['name']);
         const marker = new google.maps.Marker({
             position: flightP.markers[ii],
             map: map,
+            title: flightP.names[ii]['name']
         });
     }
 }
