@@ -15,6 +15,16 @@ import uuid
 from uuid import uuid4
 import hashlib
 
+import pandas as pd
+
+from surprise import Dataset
+from surprise import accuracy
+from surprise.model_selection import train_test_split
+from surprise import Reader
+from surprise import SVD
+import requests
+import json
+
 app = Flask(__name__)
 load_dotenv()
 
@@ -187,9 +197,31 @@ def addInterests():
                         'rating': updateInterests[key]
                     }
                     try:
+                        #cur.execute("""
+                        #UPSERT INTO activityratings(userid, activityid, rating) VALUES(%(userid)s, %(activityid)s, %(rating)s);
+                        #""", keyDict)
                         cur.execute("""
-                        UPSERT INTO activityratings(userid, activityid, rating) VALUES(%(userid)s, %(activityid)s, %(rating)s);
+                        SELECT * FROM activityratings WHERE userid=%(userid)s AND activityid=%(activityid)s
                         """, keyDict)
+                        rowList = cur.fetchall()
+                        if len(rowList) > 0:
+                            try:
+                                cur.execute("""
+                                UPDATE activityratings
+                                SET rating=%(rating)s
+                                WHERE userID=%(userid)s AND activityid=%(activityid)s
+                                """, keyDict)
+                            except psycopg2.Error as error:
+                                print(error)
+                        else:
+                            try:
+                                cur.execute("""
+                                INSERT INTO activityratings (userid, activityid, rating) 
+                                VALUES(%(userid)s, %(activityid)s, %(rating)s);
+                                """, keyDict)
+                            except psycopg2.Error as error:
+                                print(error)
+
                         conn.commit()
                     except psycopg2.Error as error:
                         print(error)
@@ -324,6 +356,86 @@ def createTrip():
 
     return "true"
 
+# Parameters:
+# email: user's email
+@app.route("/ml/suggest", methods=["GET"])
+def suggest():
+    email = request.args.get('email')
+    emailDict = {'email': email}
+
+    df = pd.read_sql_table("activityratings", os.getenv('ROACH_CMD2')).dropna()
+
+    reader = Reader(rating_scale=(1, 5))
+    data = Dataset.load_from_df(df[df.columns.tolist()], reader)
+    trainset, testset = train_test_split(data, test_size=0.20)
+
+    model = SVD()
+    model.fit(trainset)
+    predictions = model.test(testset)
+
+    listToSuggest = []
+    suggestedList = []
+
+    #userid should be stored here
+    if email is not None:
+        conn = psycopg2.connect(dsn)
+        userid = ""
+        with conn.cursor() as cur:
+            try:
+                cur.execute("""
+                    SELECT id FROM users WHERE email=%(email)s
+                    """, emailDict)
+                conn.commit()
+                retVal = cur.fetchall()
+
+                if len(retVal) > 0:
+                    userid = str(retVal[0][0])
+
+            except psycopg2.Error as error:
+                print(error)
+
+
+        # from DB get all the activites that they did NOT rate (everything that's NULL)
+        # put them in a list called listToSuggest
+        if userid != "":
+            useridDict = {'userid': userid}
+            with conn.cursor() as cur:
+                try:
+                    cur.execute("""
+                        SELECT activityid FROM activityratings 
+                        WHERE userid=%(userid)s AND rating IS NULL
+                        """, useridDict)
+                    conn.commit()
+                    retVal = cur.fetchall()
+
+                    for row in retVal:
+                        listToSuggest.append(row[0])
+
+                except psycopg2.Error as error:
+                    print(error)
+
+                for activityid in listToSuggest:
+                    pred = model.predict(userid, activityid)
+                    predRating = pred.est
+                    if predRating > 2.6:
+                        activityidDict = {'activityid': activityid}
+                        try:
+                            cur.execute("""
+                                SELECT activity FROM interests
+                                WHERE activityid=%(activityid)s
+                                """, activityidDict)
+                            conn.commit()
+                            retVal = cur.fetchall()
+
+                            suggestedDict = {}
+
+                            for row in retVal:
+                                suggestedList.append(row[0])
+
+                        except psycopg2.Error as error:
+                            print(error)
+
+    return jsonify(suggestedList)
 
 @app.after_request
 def after_request(response):
