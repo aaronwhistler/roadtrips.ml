@@ -187,3 +187,26 @@ button{
 .errorText{
     text-align: center;
 }
+
+.largerText{
+    text-align: center;
+    font-size: 2em;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.divbox {
+    background-color: #f8f9cc;
+    border-radius: 18px;
+    border-width: 7px;
+    border-color: #5c6b28;
+    border-style: solid;
+    padding: 20px;
+    width: 70%;
+    height: 20%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
+
+}

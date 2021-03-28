@@ -3,16 +3,23 @@ function expandOverlay() {
     const but = document.getElementById("overlay");
     const countoverlay = document.getElementById("counterOverlay");
     const div = document.getElementById("divStop");
+    const bdiv = document.getElementById("buttondiv");
     if(but.className == "overlay") {
         but.className = "overlaySmall";
         countoverlay.hidden = true;
         div.hidden = true;
+        bdiv.hidden = true;
     }
     else {
         but.className = "overlay";
         countoverlay.hidden = false;
         div.hidden = false;
+        bdiv.hidden = false;
     }
+}
+
+function recallHobby() {
+    window.location.href = "HobbySelectPage.html";
 }
 
 function incCount() {
@@ -54,6 +61,7 @@ function journeyChart() {
         temppic.style="width:100%;height:100%;";
         temp.textContent = "Peter Undertale" + i.toString();
         temp.className="errorText";
+        tempdiv.className="divbox";
         tempdiv.appendChild(temp);
         tempdiv.appendChild(temppic);
 
@@ -116,6 +124,7 @@ function CenterControl(controlDiv) {
 
     const counterdiv = document.createElement( "div");
     counterdiv.id = "counterOverlay";
+    counterdiv.className = "divbox";
     counterdiv.hidden = true;
 
     const stopText = document.createElement("h3");
@@ -125,26 +134,30 @@ function CenterControl(controlDiv) {
     stopText.style.marginRight = "1%";
     counterdiv.appendChild(stopText);
 
+    const centeringdiv = document.createElement("div");
+    centeringdiv.style.marginLeft = "20%";
+
     const lessbutton = document.createElement("button");
     lessbutton.id = "lessbutton";
     lessbutton.textContent = "⮜";
-    lessbutton.style.marginLeft = "10px";
-    lessbutton.style.marginTop = "5px";
+    lessbutton.className="listButton";
     lessbutton.onclick = function(){decCount()};
-    counterdiv.appendChild(lessbutton);
+    centeringdiv.appendChild(lessbutton);
 
-    const counter = document.createElement("pre");
+    const counter = document.createElement("span");
     counter.textContent = "1";
+    counter.className= "largerText";
     counter.id = "tripCount";
-    counterdiv.appendChild(counter);
+    centeringdiv.appendChild(counter);
 
     const greaterbutton = document.createElement("button");
     greaterbutton.id = "greaterbutton";
     greaterbutton.textContent = "⮞";
-    greaterbutton.style.marginLeft = "1%";
-    greaterbutton.style.marginTop = "1%";
+    greaterbutton.className="listButton";
     greaterbutton.onclick = function(){incCount()};
-    counterdiv.appendChild(greaterbutton);
+    centeringdiv.appendChild(greaterbutton);
+
+    counterdiv.appendChild(centeringdiv);
 
     controlUI.appendChild(counterdiv);
 
@@ -154,6 +167,18 @@ function CenterControl(controlDiv) {
     stopDiv.hidden = true;
     controlUI.appendChild(stopDiv);
 
+    const buttondiv = document.createElement("div");
+    buttondiv.id = "buttondiv";
+    buttondiv.hidden = true;
+
+
+    const HobbyButton = document.createElement("button");
+    HobbyButton.textContent = "Reselect Hobbies.";
+    HobbyButton.className = "listButton";
+    HobbyButton.onclick = function(){recallHobby()};
+
+    buttondiv.appendChild(HobbyButton);
+    controlUI.appendChild(buttondiv);
     //adds the ui to maps
     controlDiv.appendChild(controlUI);
 }
