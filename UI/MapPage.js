@@ -65,11 +65,8 @@ function journeyChart() {
     jsonObj = JSON.parse(jsonObj);
     console.log(jsonObj);
     PassObj(jsonObj);
-    /*let ApiObj =
-    console.log(ApiObj);*/
-    //SetMAP(JSON.stringify(apiobj));
+
     //window.location.href = "MapPage.html";
-    //map.setZoom(map.getZoom());
 }
 
 function PassObj(jsonOBJ) {
@@ -287,18 +284,6 @@ async function FetchPolyline()
         });
 }
 
-/*function DrawPolyline(fpCoords)
-{
-
-    const flightPath = new google.maps.Polyline({
-        path: flightPlanCoordinates,
-        geodesic: true,
-        strokeColor: "#FF0000",
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-    });
-    flightPath.setMap(map);
-}*/
 
 async function initMap() {
 
@@ -320,7 +305,6 @@ async function initMap() {
 
     /*let fp = await FetchPolyline();
     console.log(fp);*/
-    //sets mappath
     //SetMapPath(JSON.stringify(fp));
 
     if(JSON.parse(GetMapPath()) != null) {
