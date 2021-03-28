@@ -5,31 +5,32 @@
     <title>Roadtrips.ml</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="setupDropdown()">
-<div class="header"></div>
+<body onload="RandomSetup()">
+    <div class="header"></div>
+    <div class="bodySec">
+        <h1 class="genericHead">Just a little more information is required!</h1>
+        <div class="actSquare">
+            <h2>Please select 5 of the following activities and rate them according to your level of interest.</h2>
+            <dev id="asearch" style="margin-left: 25%;margin-bottom: 10px">
+                <input type="text" id="activitySearch">
+                <button onclick="SearchHobbies()">Search</button>
+                <button onclick="RandomSetup()" style="margin-left: 50px">Get Random Activities</button>
+            </dev>
+            <div id="output" style="width:100%;height:90%;overflow:auto">
+            </div>
+        </div>
 
-<div class="bodySec">
-    <h1 class="genericHead">Just a little more information is required!</h1>
-    <div class="actSquare">
-        <h2>Please select 5 of the following activites and rate them according to your level of interest.</h2>
-        <dev id="asearch" style="margin-left: 25%;margin-bottom: 10px">
-            <input type="search" id="activitySearch">
-            <input type="submit">
-        </dev>
-        <div id="output" style="width:100%;height:90%;overflow:auto">
+        <div class="scoreSquare">
+            <h2 class="genericHead">Activities</h2>
+            <div style="width:100%;height:100%;">
+                <div id="scoreBox" style="width:100%;height:80%;overflow:auto">
+
+                </div>
+                <input type="button" value="button" onclick="submitActivities()" style="height: 8%; width: 100px; margin-top: 5px; margin-bottom: 20px;border-style: solid;border-color: black;background-color: #f8f9cc;border-radius: 18px;">
+            </div>
         </div>
     </div>
-    <div class="scoreSquare">
-        <h2 class="genericHead">Activities</h2>
-        <form style="width:100%;height:100%;">
-            <div id="scoreBox" style="width:100%;height:80%;overflow:auto">
-
-            </div>
-            <input type="submit" value="Submit" style="height: 8%; width: 100px; margin-top: 5px; margin-bottom: 20px;border-style: solid;border-color: black;background-color: #f8f9cc;border-radius: 18px;">
-        </form>
-    </div>
-</div>
-<div class="footer"></div>
-<script type="text/javascript" src="HobbySelect.js"></script>
+    <div class="footer"></div>
+    <script type="text/javascript" src="HobbySelect.js"></script>
 </body>
 </html>
