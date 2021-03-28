@@ -40,6 +40,7 @@ async function FetchHobbies()
 
 async function RatingClick(buttonPassed) {
     let br = document.createElement("br");
+
     /*let temp = document.createTextNode(buttonPassed.textContent);
     let br = document.createElement("br");
     document.getElementById('scoreBox').appendChild(temp);
@@ -49,7 +50,7 @@ async function RatingClick(buttonPassed) {
     let tempVal = document.createElement("input");
 
     tempLab.textContent = buttonPassed.textContent;
-    tempLab.style.fontSize = "16px";
+    tempLab.style.fontSize = "26px";
     tempRange.type = "range";
     tempRange.id = buttonPassed.textContent;
     tempRange.min = '1';
@@ -70,6 +71,7 @@ async function RatingClick(buttonPassed) {
     document.getElementById('scoreBox').appendChild(tempVal);
     document.getElementById('scoreBox').appendChild(br);
 
+    buttonPassed.remove();
 }
 
 function updateVal(box, val) {
