@@ -1,6 +1,7 @@
 let activityName = [];
 let activityValue = [];
 let idNum = 0;
+const NumOfHobbies = 741;
 
 function HobbycallAPI(method, url, type, callback, params = 0) {
     let xhr = new XMLHttpRequest();
@@ -42,6 +43,91 @@ async function setupDropdown() {
     }
     //document.getElementById('output').textContent = (prom['hobbies']);
     //document.getElementById('output').textContent = (parsed[3]);
+
+}
+
+async function CreateButtons(hobArray, num) {
+    RemoveButtons();
+    let ii;
+    for(ii = 0; ii < num; ii++)
+    {
+        let tempBut = document.createElement("button");
+        tempBut.textContent = hobArray[ii];
+        tempBut.className = "listButton";
+        tempBut.addEventListener('click', function () {
+            RatingClick(tempBut);
+        })
+        document.getElementById('output').appendChild(tempBut);
+    }
+}
+
+function RemoveButtons() {
+    let tempOut = document.getElementById('output');
+    //console.log(tempOut.childElementCount);
+    let numChild = tempOut.childElementCount;
+    //console.log(numChild);
+    if(numChild != 0) {
+        let ii;
+
+        for (ii = 0; ii < numChild; ii++) {
+            //console.log(ii);
+            tempOut.removeChild(tempOut.lastChild);
+        }
+        activityName = [];
+        activityValue = [];
+        idNum = 0;
+    }
+}
+
+async function RandomSetup()
+{
+    const prom = await FetchHobbies();
+    let parsed = prom['hobbies'].split(',');
+
+    console.log(parsed.length);
+
+    let hobbyArr = [];
+    let ii = 0;
+    let rand = 0;
+
+    for(ii; ii < 85; ii++)
+    {
+        rand += Math.floor(Math.random() * 40);
+        if(rand > NumOfHobbies)
+        {
+            rand = 0;
+            ii--;
+        }
+        else {
+            hobbyArr.push(parsed[rand]);
+        }
+    }
+
+    await CreateButtons(hobbyArr, 85);
+
+}
+
+async function SearchHobbies()
+{
+    const prom = await FetchHobbies();
+    let parsed = prom['hobbies'].split(',');
+
+    let tempSearch = document.getElementById('activitySearch');
+    let hobbyArr = [];
+    let ii;
+    let num = 0;
+    //console.log(tempSearch.value);
+    for (ii = 0; ii < NumOfHobbies; ii++) {
+        //console.log(parsed[ii])
+        let find = parsed[ii].search(tempSearch.value);
+        //console.log(find);
+        if(find !== -1)
+        {
+            hobbyArr.push(parsed[ii]);
+            num++;
+        }
+    }
+        await CreateButtons(hobbyArr, num);
 
 }
 
@@ -115,9 +201,9 @@ function submitActivities() {
         alert("Select at least 5 activities");
     else {
         let interests = "";
-        let jj = 0;
+        let jj;
         for (jj = 0; jj < activityName.length; jj++) {
-            if (jj == activityName.length - 1)
+            if (jj === activityName.length - 1)
                 interests += '"' + activityName[jj] + '": ' + activityValue[jj];
             else
                 interests += '"' + activityName[jj] + '": ' + activityValue[jj] + ',';
