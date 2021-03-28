@@ -84,15 +84,16 @@ async function RandomSetup()
     const prom = await FetchHobbies();
     let parsed = prom['hobbies'].split(',');
 
-    console.log(parsed.length);
-
+    //console.log(parsed.length);
+    console.log(GetEmail());
     let hobbyArr = [];
     let ii = 0;
-    let rand = 0;
+    let rand = -1;
 
     for(ii; ii < 85; ii++)
     {
         rand += Math.floor(Math.random() * 40);
+        rand += 1;
         if(rand > NumOfHobbies)
         {
             rand = 0;
@@ -210,7 +211,8 @@ function submitActivities() {
         }
 
         interests = '"' + "interests" + '": { ' + interests + '}';
-        let email = "aaron.whistler@oit.edu" //need to set as actual email
+        //console.log(GetEmail());
+        let email = GetEmail(); //need to set as actual email
 
         let jsonText = '{ "' + "email" + '"' + ": " + '"' + email + '", ' + interests + '}';
 
@@ -222,13 +224,13 @@ function submitActivities() {
 }
 
 function PassInterests(jsonOBJ) {
-    console.log(jsonOBJ);
+    //console.log(jsonOBJ);
     let tempURL = "https://roadtrips-ml.herokuapp.com/interests/addInterests";
     HobbycallAPI("POST", tempURL, "json", AdvanceInterestPage, jsonOBJ);
 }
 
 function AdvanceInterestPage()
 {
-    console.log("A P I   D O N E");
-    //window.location.href = "MapPage.html";
+    //console.log("A P I   D O N E");
+    window.location.href = "MapPage.html";
 }

@@ -77,9 +77,12 @@ function loginAttempt() {
 function checkLogin(result) {
     let printObj = JSON.parse(result);
     //console.log(printObj);
-    //console.log(typeof printObj);
     if(printObj.valueOf() === true)
     {
+        //console.log(currentEmail);
+       // currentEmail = document.getElementById("emailLogin").value;
+        //console.log(currentEmail);
+        SetEmail(document.getElementById("emailLogin").value);
         window.location.href = "MapPage.html";
     }
     else
@@ -113,6 +116,8 @@ function checkSignUp(result) {
     let printObj = JSON.parse(result);
     if(printObj.valueOf() === true)
     {
+        SetEmail(document.getElementById("emailLogin").value);
+        //current email = document.getElementById("emailLogin").value;
         window.location.href = "HobbySelectPage.html";
     }
     else
