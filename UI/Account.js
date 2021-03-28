@@ -13,7 +13,7 @@ function SetMapPath(path) {
 }
 
 function GetStopCount() {
-    return console.log(sessionStorage.getItem("stopcount"));
+    return sessionStorage.getItem("stopcount");
 }
 function SetStopCount(path) {
     console.log(path);
