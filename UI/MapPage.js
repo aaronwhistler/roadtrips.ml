@@ -1,4 +1,18 @@
 // Expands and contracts ui from click of button
+function MapCallAPI(method, url, type, callback, params = 0) {
+    let xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.responseType = type;
+    xhr.onload = function() {
+        callback(xhr.response);
+    };
+
+    //console.log(params);
+
+    xhr.send(JSON.stringify(params));
+}
+
 function expandOverlay() {
     const but = document.getElementById("overlay");
     const countoverlay = document.getElementById("counterOverlay");
@@ -68,6 +82,9 @@ function journeyChart() {
         div.appendChild(tempdiv);
         i++;
     }
+    //this should refresh allow new polyline.json to run
+    //window.location.href = "MapPage.html";
+    //map.setZoom(map.getZoom());
 }
 
 // Creates UI Overlay onto map
@@ -177,25 +194,67 @@ function CenterControl(controlDiv) {
     HobbyButton.className = "listButton";
     HobbyButton.onclick = function(){recallHobby()};
 
+    const NewHobbyButton = document.createElement("button");
+    NewHobbyButton.textContent = "Hobby Suggestion";
+    NewHobbyButton.className = "listButton";
+    NewHobbyButton.onclick = function(){GetSuggestion()};
+
     buttondiv.appendChild(HobbyButton);
+    buttondiv.appendChild(NewHobbyButton);
     controlUI.appendChild(buttondiv);
     //adds the ui to maps
     controlDiv.appendChild(controlUI);
 }
 
-function initMap() {
+function GetSuggestion() {
+    let hobs = GetInterests();
+    console.log("BELOW IS ML");
+    console.log(hobs);
+    let hobbyName = "Swimming";
+    if (confirm("Should we add " + hobbyName + " to your interests?")) {
+        // Add suggestion to user interests here
+        let interests = '"' + "interests" + '": { ' + '"' + hobbyName + '": ' + 3 + '}';
+        let email = GetEmail();
+        let jsonText = '{ "' + "email" + '"' + ": " + '"' + email + '", ' + interests + '}';
+        let jsonObj = JSON.parse(jsonText);
+        console.log(jsonObj);
+        //PassInterests(jsonObj);
+        alert("We added " + hobbyName + " to your interests.");
+    } else {
+    }
+}
+
+async function FetchPolyline()
+{
+    return fetch('../data/polyline.json')
+        .then(response => response.json())
+        .then(data => {
+            //console.log(data);
+            return data;
+        });
+}
+
+/*function DrawPolyline(fpCoords)
+{
+
+    const flightPath = new google.maps.Polyline({
+        path: flightPlanCoordinates,
+        geodesic: true,
+        strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+    });
+    flightPath.setMap(map);
+}*/
+
+async function initMap() {
     console.log(GetEmail());
     // The location of Uluru
-    const uluru = { lat: -25.344, lng: 131.036 };
+    const KFalls = { lat: 42.224, lng: -121.781 };
     // The map, centered at Uluru
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 4,
-        center: uluru,
-    });
-    // The marker, positioned at Uluru
-    const marker = new google.maps.Marker({
-        position: uluru,
-        map: map,
+        center: KFalls,
     });
 
     const centerControlDiv = document.createElement("div");
@@ -204,4 +263,56 @@ function initMap() {
     map.controls[google.maps.ControlPosition.LEFT_CENTER].push(
         centerControlDiv
     );
+
+    let fp = await FetchPolyline();
+    console.log(fp);
+    //DrawPolyline(flightPlanCoordinates);
+    const flightPath = new google.maps.Polyline({
+        path: fp.coords,
+        geodesic: true,
+        strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+    });
+
+    makeMarkers(3,fp,map);
+    /*const marker1 = new google.maps.Marker({
+        position: fp.markers[0],
+        map: map,
+    });
+    const marker2 = new google.maps.Marker({
+        position: fp.markers[1],
+        map: map,
+    });*/
+
+    flightPath.setMap(map);
+
+}
+
+//args: number of markers, flightpath markse
+function makeMarkers(num, flightP,map)
+{
+    let ii = 0;
+    for(ii; ii < num; ii++)
+    {
+        const marker = new google.maps.Marker({
+            position: flightP.markers[ii],
+            map: map,
+        });
+    }
+}
+
+function GetInterests() {
+    //console.log(jsonOBJ);
+    let tempURL = "http://localhost:5000/ml/suggest";
+    //let tempEmail =
+    let temp = MapCallAPI("GET", tempURL, "json", GetInterestsDone, GetEmail());
+    console.log(temp);
+    return temp;
+}
+
+function GetInterestsDone()
+{
+    //console.log("A P I   D O N E");
+    //window.location.href = "MapPage.html";
 }

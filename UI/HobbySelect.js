@@ -12,7 +12,7 @@ function HobbycallAPI(method, url, type, callback, params = 0) {
         callback(xhr.response);
     };
 
-    console.log(params);
+    //console.log(params);
 
     xhr.send(JSON.stringify(params));
 }
@@ -212,7 +212,7 @@ function submitActivities() {
 
         interests = '"' + "interests" + '": { ' + interests + '}';
         //console.log(GetEmail());
-        let email = GetEmail(); //need to set as actual email
+        let email = GetEmail();
 
         let jsonText = '{ "' + "email" + '"' + ": " + '"' + email + '", ' + interests + '}';
 
